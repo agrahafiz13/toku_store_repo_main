@@ -1,8 +1,8 @@
 package repositories
 
 import (
-	"github.com/agrahafiz13/gin-firebase-backend/config"
-	"github.com/agrahafiz13/gin-firebase-backend/models"
+	"github.com/agrahafiz13/tokusatsu_store/config"
+	"github.com/agrahafiz13/tokusatsu_store/models"
 )
 
 type ProductRepository struct{}
