@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/agrahafiz13/tokusatsu_store/models"
-	"github.com/agrahafiz13/tokusatsu_store/services"
+	"github.com/agrahafiz13/toku_store_backend/models"
+	"github.com/agrahafiz13/toku_store_backend/services"
 	"github.com/gin-gonic/gin"
 )
 

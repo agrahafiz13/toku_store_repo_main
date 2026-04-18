@@ -1,8 +1,8 @@
 package repositories
 
 import (
-	"github.com/agrahafiz13/tokusatsu_store/config"
-	"github.com/agrahafiz13/tokusatsu_store/models"
+	"github.com/agrahafiz13/toku_store_backend/config"
+	"github.com/agrahafiz13/toku_store_backend/models"
 )
 
 type UserRepository struct{}

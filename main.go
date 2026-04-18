@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/agrahafiz13/tokusatsu_store/config"
-	"github.com/agrahafiz13/tokusatsu_store/routes"
+	"github.com/agrahafiz13/toku_store_backend/config"
+	"github.com/agrahafiz13/toku_store_backend/routes"
 	"github.com/joho/godotenv"
 )
 

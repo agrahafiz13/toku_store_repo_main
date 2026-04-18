@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/agrahafiz13/tokusatsu_store/models"
+	"github.com/agrahafiz13/toku_store_backend/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

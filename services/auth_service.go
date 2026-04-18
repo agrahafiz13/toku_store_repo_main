@@ -7,9 +7,9 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/agrahafiz13/tokusatsu_store/config"
-	"github.com/agrahafiz13/tokusatsu_store/models"
-	"github.com/agrahafiz13/tokusatsu_store/repositories"
+	"github.com/agrahafiz13/toku_store_backend/config"
+	"github.com/agrahafiz13/toku_store_backend/models"
+	"github.com/agrahafiz13/toku_store_backend/repositories"
 	"github.com/golang-jwt/jwt/v4"
 	"gorm.io/gorm"
 )

@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/agrahafiz13/tokusatsu_store/services"
+	"github.com/agrahafiz13/toku_store_backend/services"
 	"github.com/gin-gonic/gin"
 )
 

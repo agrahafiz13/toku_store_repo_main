@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"github.com/agrahafiz13/tokusatsu_store/handlers"
-	"github.com/agrahafiz13/tokusatsu_store/middleware"
+	"github.com/agrahafiz13/toku_store_backend/handlers"
+	"github.com/agrahafiz13/toku_store_backend/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -35,7 +35,7 @@ func SetupRouter() *gin.Engine {
 		v1.GET("/health", func(c *gin.Context) {
 			c.JSON(200, gin.H{
 				"status":  "ok",
-				"service": "tokusatsu_store",
+				"service": "toku_store_backend",
 			})
 		})
 

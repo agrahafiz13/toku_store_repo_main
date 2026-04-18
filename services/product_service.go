@@ -3,8 +3,8 @@ package services
 import (
 	"errors"
 
-	"github.com/agrahafiz13/tokusatsu_store/models"
-	"github.com/agrahafiz13/tokusatsu_store/repositories"
+	"github.com/agrahafiz13/toku_store_backend/models"
+	"github.com/agrahafiz13/toku_store_backend/repositories"
 )
 
 type ProductService struct {
