@@ -1,4 +1,4 @@
-module toku-store-api
+module github.com/agrahafiz13/tokusatsu_store
 
 go 1.26.1
 
