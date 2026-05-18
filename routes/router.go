@@ -30,6 +30,10 @@ func SetupRouter() *gin.Engine {
 
 	// ─── API v1 group ─────────────────────────────────────────
 	v1 := r.Group("/v1")
+	v1.GET("/cart", handlers.GetCart)
+	v1.POST("/cart", handlers.AddToCart)
+	v1.PUT("/cart/:id", handlers.UpdateCart)
+	v1.DELETE("/cart/:id", handlers.RemoveCart)
 	{
 		// Health check — tidak perlu auth
 		v1.GET("/health", func(c *gin.Context) {
