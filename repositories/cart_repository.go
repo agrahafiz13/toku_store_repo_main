@@ -6,7 +6,6 @@ import (
 )
 
 func AddToCart(item *models.CartItem) error {
-
 	return config.DB.Create(item).Error
 }
 
@@ -70,4 +69,15 @@ func FindCartItemByID(
 		First(&item, id).Error
 
 	return &item, err
+}
+
+// ================= CLEAR CART =================
+
+func ClearCartByUserID(
+	userID uint,
+) error {
+
+	return config.DB.
+		Where("user_id = ?", userID).
+		Delete(&models.CartItem{}).Error
 }

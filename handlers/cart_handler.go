@@ -133,3 +133,23 @@ func RemoveCart(c *gin.Context) {
 		"message": "Cart removed",
 	})
 }
+
+func ClearCart(c *gin.Context) {
+
+	userID := uint(1)
+
+	err := services.ClearCart(userID)
+
+	if err != nil {
+
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Cart cleared",
+	})
+}
