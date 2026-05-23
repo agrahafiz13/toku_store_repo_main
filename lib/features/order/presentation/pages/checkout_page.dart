@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:toku_store/features/cart/presentation/providers/cart_provider.dart';
+import 'package:toku_store/features/order/presentation/pages/order_success.dart';
 import 'package:toku_store/features/order/presentation/providers/order_provider.dart';
 
 class CheckoutPage extends StatefulWidget {
