@@ -5,6 +5,7 @@ import 'package:toku_store/core/theme/app_theme.dart';
 import 'package:toku_store/features/auth/presentation/providers/auth_provider.dart';
 import 'package:toku_store/features/dashboard/presentation/providers/product_provider.dart';
 import 'package:toku_store/features/cart/presentation/providers/cart_provider.dart';
+import 'package:toku_store/features/order/presentation/providers/order_provider.dart';
 import 'package:toku_store/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => ProductProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => OrderProvider()),
       ],
       child: const MyApp(),
     ),
