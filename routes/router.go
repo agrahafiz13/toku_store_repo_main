@@ -36,6 +36,8 @@ func SetupRouter() *gin.Engine {
 	v1.DELETE("/cart/:id", handlers.RemoveCart)
 	v1.DELETE("/cart", handlers.ClearCart)
 	v1.POST("/orders/checkout", handlers.Checkout)
+	v1.GET("/orders", handlers.GetMyOrders)
+	v1.GET("/orders/:id", handlers.GetOrderDetail)
 	{
 		// Health check — tidak perlu auth
 		v1.GET("/health", func(c *gin.Context) {

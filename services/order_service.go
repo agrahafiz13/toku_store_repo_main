@@ -7,6 +7,8 @@ import (
 	"github.com/agrahafiz13/toku_store_backend/repositories"
 )
 
+// ================= CHECKOUT =================
+
 func Checkout(
 	userID uint,
 	shippingAddress string,
@@ -31,7 +33,6 @@ func Checkout(
 	var total float64 = 0
 
 	for _, item := range cartItems {
-
 		subtotal :=
 			item.Product.Price *
 				float64(item.Quantity)
@@ -94,4 +95,22 @@ func Checkout(
 	}
 
 	return order, nil
+}
+
+// ================= GET MY ORDERS =================
+
+func GetMyOrders(
+	userID uint,
+) ([]models.Order, error) {
+
+	return repositories.GetOrdersByUserID(userID)
+}
+
+// ================= GET ORDER DETAIL =================
+
+func GetOrderDetail(
+	id uint,
+) (*models.Order, error) {
+
+	return repositories.GetOrderByID(id)
 }
