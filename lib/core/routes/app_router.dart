@@ -16,9 +16,11 @@ class AppRouter {
   static const String register = '/register';
   static const String verifyEmail = '/verify-email';
   static const String dashboard = '/dashboard';
-  static const String myOrders = '/my-orders';
-
+  static const String cart = '/cart';
+  static const String checkout = '/checkout';
   static const String orderSuccess = '/order-success';
+  static const String myOrders = '/my-orders';
+  static const String paymentPending = '/payment-pending';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
