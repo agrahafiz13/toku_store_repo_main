@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:toku_store/core/providers/theme_provider.dart';
 import 'package:toku_store/core/routes/app_router.dart';
 import 'package:toku_store/core/services/biometric_lock_provider.dart';
-import 'package:toku_store/core/services/global_institute_pay_service.dart';
+import 'package:toku_store/core/services/dompet_pay_service.dart';
 import 'package:toku_store/core/services/notification_service.dart';
 import 'package:toku_store/core/theme/app_theme.dart';
 import 'package:toku_store/core/widgets/biometric_lock_screen.dart';
@@ -20,7 +20,7 @@ void main() async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await NotificationService.initialize();
-  await GlobalInstitutePayService().init();
+  await DompetPayService().init();
 
   runApp(
     MultiProvider(

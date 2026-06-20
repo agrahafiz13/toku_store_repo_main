@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 
 // ── Log helper ────────────────────────────────────────────────
 void _log(String tag, String message) {
- debugPrint('[PasarMalam/$tag] $message');
+ debugPrint('[TokuStore/$tag] $message');
 }
 
 // ── Model callback ────────────────────────────────────────────
@@ -28,12 +28,12 @@ class PaymentCallbackData {
 
 /// Mengelola deeplink keluar ke Dompet Kampus Global
 /// dan deeplink masuk (callback pembayaran) ke Pasar Malam.
-class GlobalInstitutePayService {
- static final GlobalInstitutePayService _instance = GlobalInstitutePayService._();
- factory GlobalInstitutePayService() => _instance;
- GlobalInstitutePayService._();
+class DompetPayService {
+ static final DompetPayService _instance = DompetPayService._();
+ factory DompetPayService() => _instance;
+ DompetPayService._();
 
- static const _tag = 'GlobalInstitutePay';
+ static const _tag = 'DompetPay';
 
  final _callbackController = StreamController<PaymentCallbackData>.broadcast();
  Stream<PaymentCallbackData> get onCallback => _callbackController.stream;
@@ -53,7 +53,7 @@ class GlobalInstitutePayService {
  // ── Init ────────────────────────────────────────────────────
 
  Future<void> init() async {
- _log(_tag, ' Inisialisasi GlobalInstitutePayService...');
+ _log(_tag, ' Inisialisasi DompetPayService...');
 
  final appLinks = AppLinks();
 
@@ -96,8 +96,8 @@ class GlobalInstitutePayService {
  );
 
  // Filter: hanya proses callback Pasar Malam
- if (uri.scheme != 'pasarmalam') {
- _log(_tag, '⏩ Diabaikan — bukan skema pasarmalam (scheme=${uri.scheme})');
+ if (uri.scheme != 'tokustore') {
+ _log(_tag, '⏩ Diabaikan — bukan skema tokustore (scheme=${uri.scheme})');
  return;
  }
  if (uri.host != 'payment-callback') {
@@ -130,14 +130,14 @@ class GlobalInstitutePayService {
  required double amount,
  String? description,
  }) {
- const scheme = 'dompetkampus';
+ const scheme = 'dompettoku';
  const host = 'pay';
  final desc = (description != null && description.isNotEmpty) ? description : 'Order #$orderId';
- const callbackUrl = 'pasarmalam://payment-callback';
+ const callbackUrl = 'tokustore://payment-callback';
 
  _log(_tag, ' Membangun deeplink URL:');
- _log(_tag, 'merchant_id : MCH_PASAR_MALAM');
- _log(_tag, 'merchant_name: Pasar Malam');
+ _log(_tag, 'merchant_id : MCH_TOKU_STORE');
+ _log(_tag, 'merchant_name: Toku Store');
  _log(_tag, 'amount : ${amount.toInt()}');
  _log(_tag, 'description : $desc');
  _log(_tag, 'reference : INV-$orderId');
@@ -147,8 +147,8 @@ class GlobalInstitutePayService {
  scheme: scheme,
  host: host,
  queryParameters: {
- 'merchant_id': 'MCH_PASAR_MALAM',
- 'merchant_name': 'Pasar Malam',
+ 'merchant_id': 'MCH_TOKU_STORE',
+ 'merchant_name': 'Toku Store',
  'amount': amount.toInt().toString(),
  'description': desc,
  'reference': 'INV-$orderId',

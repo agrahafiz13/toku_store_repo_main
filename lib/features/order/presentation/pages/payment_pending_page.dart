@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toku_store/core/routes/app_router.dart';
-import 'package:toku_store/core/services/global_institute_pay_service.dart';
+import 'package:toku_store/core/services/dompet_pay_service.dart';
 import 'package:toku_store/features/order/data/models/order_model.dart';
 import 'package:toku_store/features/order/presentation/providers/order_provider.dart';
 import 'package:provider/provider.dart';
@@ -48,7 +48,7 @@ class _PaymentPendingPageState extends State<PaymentPendingPage>
  context.read<OrderProvider>().startPaymentPolling(widget.order.id);
 
  // Periksa callback yang masuk saat cold start
- final pending = GlobalInstitutePayService().consumePendingCallback();
+ final pending = DompetPayService().consumePendingCallback();
  if (pending != null) {
  _log(' Cold-start callback ditemukan: $pending');
  if (pending.isSuccess) {
@@ -63,8 +63,8 @@ class _PaymentPendingPageState extends State<PaymentPendingPage>
  }
 
  // Subscribe stream callback (app berjalan di background/foreground)
- _log(' Subscribe GlobalInstitutePayService.onCallback stream...');
- _callbackSub = GlobalInstitutePayService().onCallback.listen((data) {
+ _log(' Subscribe DompetPayService.onCallback stream...');
+ _callbackSub = DompetPayService().onCallback.listen((data) {
  _log(' Callback diterima dari stream: $data');
  if (!mounted) {
  _log('Widget sudah di-dispose, callback diabaikan');
@@ -113,7 +113,7 @@ class _PaymentPendingPageState extends State<PaymentPendingPage>
  final notes = widget.order.notes.isNotEmpty ? widget.order.notes : null;
 
  // Build URL — detail parameter sudah dilog di dalam service
- final deeplinkUrl = GlobalInstitutePayService.buildDeeplinkUrl(
+ final deeplinkUrl = DompetPayService.buildDeeplinkUrl(
  orderId: widget.order.id,
  amount: widget.order.totalAmount,
  description: notes,
