@@ -1,30 +1,38 @@
-import 'package:toku_store/core/providers/theme_provider.dart';
-import 'package:toku_store/core/routes/app_router.dart';
-import 'package:toku_store/core/services/secure_storage.dart';
-import 'package:toku_store/core/theme/app_theme.dart';
-import 'package:toku_store/features/auth/presentation/providers/auth_provider.dart';
-import 'package:toku_store/features/dashboard/presentation/providers/product_provider.dart';
-import 'package:toku_store/features/cart/presentation/providers/cart_provider.dart';
-import 'package:toku_store/features/order/presentation/providers/order_provider.dart';
-import 'package:toku_store/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:toku_store/core/providers/theme_provider.dart';
+import 'package:toku_store/core/routes/app_router.dart';
+import 'package:toku_store/core/services/biometric_lock_provider.dart';
+import 'package:toku_store/core/services/global_institute_pay_service.dart';
+import 'package:toku_store/core/services/notification_service.dart';
+import 'package:toku_store/core/theme/app_theme.dart';
+import 'package:toku_store/core/widgets/biometric_lock_screen.dart';
+import 'package:toku_store/features/auth/presentation/providers/auth_provider.dart';
+import 'package:toku_store/features/cart/presentation/providers/cart_provider.dart';
+import 'package:toku_store/features/dashboard/presentation/providers/product_provider.dart';
+import 'package:toku_store/features/order/presentation/providers/order_provider.dart';
 import 'package:provider/provider.dart';
 
-Future<void> main() async {
+import 'firebase_options.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await NotificationService.initialize();
+  await GlobalInstitutePayService().init();
 
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => ProductProvider()),
-        ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => OrderProvider()),
+        ChangeNotifierProvider(
+          create: (_) => BiometricLockProvider()..initialize(),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -37,45 +45,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
-
     return MaterialApp(
-      title: 'Toku Store',
+      title: 'Pasar Malam',
       debugShowCheckedModeBanner: false,
-
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: themeProvider.themeMode,
-
       initialRoute: AppRouter.splash,
-      onGenerateRoute: AppRouter.generateRoute,
+      routes: AppRouter.routes,
+      builder: (context, child) =>
+          BiometricLockScreen(child: child!),
     );
   }
-}
-
-// SplashPage: cek token tersimpan, redirect otomatis
-class SplashPage extends StatefulWidget {
-  const SplashPage({super.key});
-  @override
-  State<SplashPage> createState() => _SplashPageState();
-}
-
-class _SplashPageState extends State<SplashPage> {
-  @override
-  void initState() {
-    super.initState();
-    _checkAuth();
-  }
-
-  Future<void> _checkAuth() async {
-    await Future.delayed(const Duration(seconds: 2)); // Animasi splash
-    if (!mounted) return;
-
-    final token = await SecureStorageService.getToken();
-    final route = token != null ? AppRouter.dashboard : AppRouter.login;
-    Navigator.pushReplacementNamed(context, route);
-  }
-
-  @override
-  Widget build(BuildContext context) =>
-      const Scaffold(body: Center(child: CircularProgressIndicator()));
 }

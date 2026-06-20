@@ -51,6 +51,7 @@ dependencies:
   flutter_biometric_kit:
     path: flutter_biometric_kit
   local_auth: ^3.0.1
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:

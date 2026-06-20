@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:toku_store/features/order/data/models/order_model.dart';
-
 import 'package:toku_store/features/order/presentation/providers/order_provider.dart';
+import 'package:provider/provider.dart';
 
 class MyOrdersPage extends StatefulWidget {
   const MyOrdersPage({super.key});
@@ -37,18 +36,8 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
     try {
       final dt = DateTime.parse(createdAt);
       final months = [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'Mei',
-        'Jun',
-        'Jul',
-        'Agu',
-        'Sep',
-        'Okt',
-        'Nov',
-        'Des',
+        'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+        'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des',
       ];
       return '${dt.day} ${months[dt.month - 1]} ${dt.year}';
     } catch (_) {
@@ -93,18 +82,20 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                   Icon(
                     Icons.receipt_long_outlined,
                     size: 72,
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.3),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.3),
                   ),
                   const SizedBox(height: 16),
                   Text(
                     'Belum ada pesanan',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withValues(alpha: 0.5),
-                    ),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withValues(alpha: 0.5),
+                        ),
                   ),
                 ],
               ),

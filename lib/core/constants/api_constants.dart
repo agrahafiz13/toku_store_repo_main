@@ -1,8 +1,10 @@
 class ApiConstants {
-  static const String baseUrl = 'http://localhost:8080/v1';
+static const String baseUrl = 'http://192.168.110.239:8080/v1';
 
   // Auth endpoints
   static const String verifyToken = '/auth/verify-token';
+  static const String refreshToken = '/auth/refresh';
+  static const String fcmToken = '/auth/fcm-token';
 
   // Product endpoints
   static const String products = '/products';

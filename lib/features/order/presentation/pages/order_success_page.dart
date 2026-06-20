@@ -84,17 +84,17 @@ class OrderSuccessPage extends StatelessWidget {
               Text(
                 'Pesanan Berhasil!',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: onSurface,
-                ),
+                      fontWeight: FontWeight.bold,
+                      color: onSurface,
+                    ),
               ),
               const SizedBox(height: 8),
               Text(
                 'Order #${order.id}',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: primary,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: primary,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
               const SizedBox(height: 28),
 
@@ -159,7 +159,10 @@ class OrderSuccessPage extends StatelessWidget {
                     foregroundColor: primary,
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, AppRouter.myOrders);
+                    Navigator.pushNamed(
+                      context,
+                      AppRouter.myOrders,
+                    );
                   },
                 ),
               ),
