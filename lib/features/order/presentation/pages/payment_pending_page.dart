@@ -113,13 +113,16 @@ class _PaymentPendingPageState extends State<PaymentPendingPage>
  final notes = widget.order.notes.isNotEmpty ? widget.order.notes : null;
 
  // Build URL — detail parameter sudah dilog di dalam service
- final deeplinkUrl = DompetPayService.buildDeeplinkUrl(
- orderId: widget.order.id,
- amount: widget.order.totalAmount,
- description: notes,
- );
+ final baseDeeplinkUrl = DompetPayService.buildDeeplinkUrl(
+    orderId: widget.order.id,
+    amount: widget.order.totalAmount,
+    description: notes,
+  );
 
- final uri = Uri.parse(deeplinkUrl);
+  // Tambahkan parameter return_url agar Dompet Toku tahu jalan pulang
+  final String finalDeeplinkUrl = '$baseDeeplinkUrl&return_url=tokustore://payment-callback';
+
+  final uri = Uri.parse(finalDeeplinkUrl);
  _log(' URI yang akan diluncurkan: $uri');
 
  // canLaunchUrl hanya untuk diagnosis — bukan penjaga keras.
