@@ -21,9 +21,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
  static const List<_PaymentOption> _paymentOptions = [
  _PaymentOption(
- value: 'global_institute_pay',
- label: 'Global Institute Pay',
- subtitle: 'Bayar via Dompet Kampus Global',
+ value: 'dompet_toku_pay',
+ label: 'Dompet_toku_pay',
+ subtitle: 'Bayar via Dompet Digital',
  icon: Icons.school_rounded,
  iconColor: Color(0xFF1A237E),
  ),
@@ -112,7 +112,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
  // Gunakan pilihan user — tidak bergantung pada nilai yang dikembalikan backend
  final needsPaymentFlow =
  _selectedPaymentMethod == 'virtual_account' ||
- _selectedPaymentMethod == 'global_institute_pay';
+ _selectedPaymentMethod == 'dompet_toku_pay';
 
  _log(' needsPaymentFlow = $needsPaymentFlow');
  _log('_selectedPaymentMethod = "$_selectedPaymentMethod"');

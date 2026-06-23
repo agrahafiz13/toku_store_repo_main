@@ -35,12 +35,12 @@ class _PaymentPendingPageState extends State<PaymentPendingPage>
 
  WidgetsBinding.instance.addObserver(this);
 
- if (widget.order.paymentMethod == 'global_institute_pay') {
- _log(' Akan auto-launch Dompet Kampus Global setelah frame pertama');
+ if (widget.order.paymentMethod == 'dompet_toku_pay') {
+ _log(' Akan auto-launch Dompet Digital Toku setelah frame pertama');
  WidgetsBinding.instance
- .addPostFrameCallback((_) => _launchGlobalInstitutePay());
+ .addPostFrameCallback((_) => _launchDompetTokuPay());
  } else {
- _log('ℹ Metode bukan global_institute_pay → skip auto-launch '
+ _log('ℹ Metode bukan dompet_toku_pay → skip auto-launch '
  '(method=${widget.order.paymentMethod})');
  }
 
@@ -105,8 +105,8 @@ class _PaymentPendingPageState extends State<PaymentPendingPage>
  }
  }
 
- Future<void> _launchGlobalInstitutePay() async {
- _log('─── _launchGlobalInstitutePay ───');
+ Future<void> _launchDompetTokuPay() async {
+ _log('─── _launchDompetTokuPay ───');
  _log('orderId=${widget.order.id} | amount=${widget.order.totalAmount} '
  '| notes="${widget.order.notes}"');
 
@@ -140,7 +140,7 @@ class _PaymentPendingPageState extends State<PaymentPendingPage>
  await launchUrl(uri, mode: LaunchMode.externalApplication);
  _log('launchUrl → $launched');
  if (launched) {
- _log(' Dompet Kampus Global berhasil dibuka');
+ _log(' Dompet Kampus Toku berhasil dibuka');
  setState(() => _payLaunched = true);
  } else {
  _log('launchUrl=false — aplikasi ada tapi tidak merespons');
@@ -149,7 +149,7 @@ class _PaymentPendingPageState extends State<PaymentPendingPage>
  }
  } catch (e) {
  _log(' Exception launchUrl: $e');
- _log('→ Aplikasi Dompet Kampus Global kemungkinan tidak terinstal');
+ _log('→ Aplikasi Dompet Kampus Toku kemungkinan tidak terinstal');
  if (!mounted) return;
  _showAppNotFoundDialog();
  }
@@ -189,12 +189,12 @@ class _PaymentPendingPageState extends State<PaymentPendingPage>
  crossAxisAlignment: CrossAxisAlignment.start,
  children: [
  Text(
- 'Aplikasi Dompet Kampus Global tidak terinstal di perangkat ini.',
+ 'Aplikasi Dompet Kampus Toku tidak terinstal di perangkat ini.',
  ),
  SizedBox(height: 12),
  Text(
  'Pesanan Anda tetap tersimpan. Lakukan pembayaran melalui aplikasi '
- 'Dompet Kampus Global, lalu kembali untuk mengecek status.',
+ 'Dompet Kampus Toku, lalu kembali untuk mengecek status.',
  style: TextStyle(fontSize: 13, color: Colors.grey),
  ),
  ],
@@ -251,12 +251,12 @@ class _PaymentPendingPageState extends State<PaymentPendingPage>
  onCheckStatus: () =>
  context.read<OrderProvider>().checkPaymentStatus(order.id),
  )
- : _GlobalInstitutePayBody(
+ : _DompetTokuPayBody(
  order: order,
  payStatus: payStatus,
  formatPrice: _formatPrice,
  payLaunched: _payLaunched,
- onOpenApp: _launchGlobalInstitutePay,
+ onOpenApp: _launchDompetTokuPay,
  onCheckStatus: () =>
  context.read<OrderProvider>().checkPaymentStatus(order.id),
  ),
@@ -566,7 +566,7 @@ class _BankStepTile extends StatelessWidget {
 // Global Institute Pay Body
 // ──────────────────────────────────────────────────────────────
 
-class _GlobalInstitutePayBody extends StatelessWidget {
+class _DompetTokuPayBody extends StatelessWidget {
  final OrderModel order;
  final PaymentCheckStatus payStatus;
  final String Function(double) formatPrice;
@@ -574,7 +574,7 @@ class _GlobalInstitutePayBody extends StatelessWidget {
  final VoidCallback onOpenApp;
  final VoidCallback onCheckStatus;
 
- const _GlobalInstitutePayBody({
+ const _DompetTokuPayBody({
  required this.order,
  required this.payStatus,
  required this.formatPrice,
@@ -613,7 +613,7 @@ class _GlobalInstitutePayBody extends StatelessWidget {
  ),
  const SizedBox(height: 16),
  Text(
- 'Bayar dengan Global Institute Pay',
+ 'Bayar dengan Toku Institute Pay',
  textAlign: TextAlign.center,
  style: Theme.of(context).textTheme.titleLarge?.copyWith(
  fontWeight: FontWeight.bold,
@@ -650,7 +650,7 @@ class _GlobalInstitutePayBody extends StatelessWidget {
  const SizedBox(width: 8),
  Expanded(
  child: Text(
- 'Pembayaran akan diverifikasi dengan PIN dan kode 2FA di aplikasi Dompet Kampus Global',
+ 'Pembayaran akan diverifikasi dengan PIN dan kode 2FA di aplikasi Dompet Kampus Toku',
  style: TextStyle(
  fontSize: 12,
  color: _brandColor.withValues(alpha: 0.85),
@@ -684,8 +684,8 @@ class _GlobalInstitutePayBody extends StatelessWidget {
  _StepItem(
  number: '1',
  text: payLaunched
- ? 'Aplikasi Dompet Kampus Global sudah dibuka'
- : 'Kamu akan diarahkan ke Dompet Kampus Global',
+ ? 'Aplikasi Dompet Kampus Toku sudah dibuka'
+ : 'Kamu akan diarahkan ke Dompet Kampus Toku',
  done: payLaunched,
  ),
  const SizedBox(height: 14),
@@ -723,8 +723,8 @@ class _GlobalInstitutePayBody extends StatelessWidget {
  icon: const Icon(Icons.open_in_new),
  label: Text(
  payLaunched
- ? 'Buka Kembali Dompet Kampus Global'
- : 'Buka Dompet Kampus Global',
+ ? 'Buka Kembali Dompet Kampus Toku'
+ : 'Buka Dompet Kampus Toku',
  style: const TextStyle(
  fontSize: 15,
  fontWeight: FontWeight.bold,
@@ -746,7 +746,7 @@ class _GlobalInstitutePayBody extends StatelessWidget {
 
  if (payStatus == PaymentCheckStatus.idle && payLaunched)
  Text(
- 'Menunggu konfirmasi pembayaran dari Dompet Kampus Global...',
+ 'Menunggu konfirmasi pembayaran dari Dompet Kampus Toku...',
  textAlign: TextAlign.center,
  style: TextStyle(
  fontSize: 13,
