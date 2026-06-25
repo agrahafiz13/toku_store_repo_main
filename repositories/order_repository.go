@@ -47,3 +47,11 @@ func GetOrderByID(
 
 	return &order, err
 }
+
+// Tambahkan di repositories/order_repository.go
+
+func UpdateOrderStatus(orderID int, status string) error {
+	// Memperbarui kolom "status" berdasarkan ID
+	err := config.DB.Model(&models.Order{}).Where("id = ?", orderID).Update("status", status).Error
+	return err
+}

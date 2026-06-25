@@ -17,9 +17,7 @@ func Checkout(
 ) (*models.Order, error) {
 
 	// ================= AMBIL CART =================
-	cartItems, err :=
-		repositories.GetCartByUserID(userID)
-
+	cartItems, err := repositories.GetCartByUserID(userID)
 	if err != nil {
 		return nil, err
 	}
@@ -31,57 +29,38 @@ func Checkout(
 
 	// ================= HITUNG TOTAL =================
 	var total float64 = 0
-
 	for _, item := range cartItems {
-		subtotal :=
-			item.Product.Price *
-				float64(item.Quantity)
-
+		subtotal := item.Product.Price * float64(item.Quantity)
 		total += subtotal
 	}
 
 	// ================= BUAT ORDER =================
 	order := &models.Order{
-		UserID: userID,
-
-		TotalAmount: total,
-
-		Status: "pending",
-
+		UserID:          userID,
+		TotalAmount:     total,
+		Status:          "pending",
 		ShippingAddress: shippingAddress,
-
-		Notes: notes,
-
-		PaymentMethod: paymentMethod,
+		Notes:           notes,
+		PaymentMethod:   paymentMethod,
 	}
 
 	err = repositories.CreateOrder(order)
-
 	if err != nil {
 		return nil, err
 	}
 
 	// ================= BUAT ORDER ITEMS =================
 	for _, cartItem := range cartItems {
-
-		subtotal :=
-			cartItem.Product.Price *
-				float64(cartItem.Quantity)
-
+		subtotal := cartItem.Product.Price * float64(cartItem.Quantity)
 		orderItem := &models.OrderItem{
-			OrderID: order.ID,
-
+			OrderID:   order.ID,
 			ProductID: cartItem.ProductID,
-
-			Quantity: cartItem.Quantity,
-
-			Price: cartItem.Product.Price,
-
-			Subtotal: subtotal,
+			Quantity:  cartItem.Quantity,
+			Price:     cartItem.Product.Price,
+			Subtotal:  subtotal,
 		}
 
 		err := repositories.CreateOrderItem(orderItem)
-
 		if err != nil {
 			return nil, err
 		}
@@ -89,7 +68,6 @@ func Checkout(
 
 	// ================= CLEAR CART =================
 	err = repositories.ClearCartByUserID(userID)
-
 	if err != nil {
 		return nil, err
 	}
@@ -99,18 +77,18 @@ func Checkout(
 
 // ================= GET MY ORDERS =================
 
-func GetMyOrders(
-	userID uint,
-) ([]models.Order, error) {
-
+func GetMyOrders(userID uint) ([]models.Order, error) {
 	return repositories.GetOrdersByUserID(userID)
 }
 
 // ================= GET ORDER DETAIL =================
 
-func GetOrderDetail(
-	id uint,
-) (*models.Order, error) {
-
+func GetOrderDetail(id uint) (*models.Order, error) {
 	return repositories.GetOrderByID(id)
+}
+
+// ================= MARK AS PAID =================
+
+func MarkOrderAsPaid(orderID int) error {
+	return repositories.UpdateOrderStatus(orderID, "paid")
 }

@@ -38,6 +38,8 @@ func SetupRouter() *gin.Engine {
 	v1.POST("/orders/checkout", handlers.Checkout)
 	v1.GET("/orders", handlers.GetMyOrders)
 	v1.GET("/orders/:id", handlers.GetOrderDetail)
+	// Pastikan ini ada di dalam grup routing order Anda
+	v1.POST("/orders/:id/pay", handlers.PaymentCallback)
 	{
 		// Health check — tidak perlu auth
 		v1.GET("/health", func(c *gin.Context) {
