@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toku_store/core/providers/favorite_provider.dart';
 import 'package:toku_store/core/providers/theme_provider.dart';
 import 'package:toku_store/core/routes/app_router.dart';
 import 'package:toku_store/features/auth/presentation/providers/auth_provider.dart';
@@ -21,10 +22,10 @@ class _DashboardPageState extends State<DashboardPage> {
   final _searchCtrl = TextEditingController();
 
   final List<_CategoryItem> _categories = const [
-    _CategoryItem(label: 'All', icon: Icons.apps),
-    _CategoryItem(label: 'Running', icon: Icons.directions_run),
-    _CategoryItem(label: 'Lifestyle', icon: Icons.style),
-    _CategoryItem(label: 'Football', icon: Icons.sports_soccer),
+    _CategoryItem(label: 'Belt', icon: Icons.apps),
+    _CategoryItem(label: 'Bracelet', icon: Icons.directions_run),
+    _CategoryItem(label: 'Weapon', icon: Icons.style),
+    _CategoryItem(label: 'Figure', icon: Icons.sports_soccer),
     _CategoryItem(label: 'Volleyball', icon: Icons.sports_volleyball),
     _CategoryItem(label: 'Tennis', icon: Icons.sports_tennis),
     _CategoryItem(label: 'Badminton', icon: Icons.sports),
@@ -228,6 +229,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
 
             // ── Bottom Navigation Bar ────────────────────
+            // ── Bottom Navigation Bar ────────────────────
             _BottomNav(
               selectedIndex: _selectedNav,
               onTap: (i) {
@@ -238,6 +240,9 @@ class _DashboardPageState extends State<DashboardPage> {
                       context.read<CartProvider>().fetchCart();
                     }
                   });
+                } else if (i == 2) { 
+                  // TAMBAHKAN INI: Navigasi ke halaman Favorite
+                  Navigator.pushNamed(context, AppRouter.favorite); 
                 } else if (i == 3) {
                   // Account → logout dialog
                   _showLogoutDialog(context, auth);
@@ -479,8 +484,6 @@ class _ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<_ProductCard> {
-  bool _isFavorite = false;
-
   void _showProductDetail(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -500,6 +503,10 @@ class _ProductCardState extends State<_ProductCard> {
     final p = widget.product;
     final surface = Theme.of(context).colorScheme.surface;
     final onSurface = Theme.of(context).colorScheme.onSurface;
+
+    // Pantau status favorit dari Provider
+    final favProv = context.watch<FavoriteProvider>();
+    final isFav = favProv.isFavorite(p);
 
     return GestureDetector(
       onTap: () => _showProductDetail(context),
@@ -542,7 +549,21 @@ class _ProductCardState extends State<_ProductCard> {
                     top: 8,
                     right: 8,
                     child: GestureDetector(
-                      onTap: () => setState(() => _isFavorite = !_isFavorite),
+                      // Panggil fungsi toggleFavorite di Provider saat diklik
+                      onTap: () {
+                        context.read<FavoriteProvider>().toggleFavorite(p);
+                        ScaffoldMessenger.of(context).clearSnackBars();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              !isFav 
+                                ? '${p.name} ditambahkan ke Favorit'
+                                : '${p.name} dihapus dari Favorit'
+                            ),
+                            duration: const Duration(seconds: 1),
+                          ),
+                        );
+                      },
                       child: Container(
                         padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
@@ -556,9 +577,9 @@ class _ProductCardState extends State<_ProductCard> {
                           ],
                         ),
                         child: Icon(
-                          _isFavorite ? Icons.favorite : Icons.favorite_border,
+                          isFav ? Icons.favorite : Icons.favorite_border,
                           size: 16,
-                          color: _isFavorite ? Colors.red : Colors.grey,
+                          color: isFav ? Colors.red : Colors.grey,
                         ),
                       ),
                     ),
