@@ -22,13 +22,11 @@ class _DashboardPageState extends State<DashboardPage> {
   final _searchCtrl = TextEditingController();
 
   final List<_CategoryItem> _categories = const [
-    _CategoryItem(label: 'Belt', icon: Icons.apps),
-    _CategoryItem(label: 'Bracelet', icon: Icons.directions_run),
-    _CategoryItem(label: 'Weapon', icon: Icons.style),
-    _CategoryItem(label: 'Figure', icon: Icons.sports_soccer),
-    _CategoryItem(label: 'Volleyball', icon: Icons.sports_volleyball),
-    _CategoryItem(label: 'Tennis', icon: Icons.sports_tennis),
-    _CategoryItem(label: 'Badminton', icon: Icons.sports),
+    _CategoryItem(label: 'All', icon: Icons.apps),
+    _CategoryItem(label: 'Belt', icon: Icons.straighten_rounded),
+    _CategoryItem(label: 'Bracelet', icon: Icons.watch),
+    _CategoryItem(label: 'Device', icon: Icons.smartphone),
+    _CategoryItem(label: 'Weapon', icon: Icons.colorize),
   ];
 
   @override
@@ -1091,16 +1089,24 @@ class _AccountDialog extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
           child: const Text('Tutup'),
         ),
-        ElevatedButton.icon(
+       ElevatedButton.icon(
           icon: const Icon(Icons.logout, size: 18),
           label: const Text('Logout'),
           style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
           onPressed: () async {
-            Navigator.pop(context);
+            // 1. Lakukan proses logout ke backend/firebase terlebih dahulu
             await auth.logout();
+            
+            // 2. Cek apakah widget masih aktif
             if (!context.mounted) return;
-            // ignore: use_build_context_synchronously
-            Navigator.pushReplacementNamed(context, AppRouter.login);
+            
+            // 3. Pindah ke halaman Login DAN hapus seluruh history navigasi
+            // Ini otomatis akan menutup dialog dan mencegah user menekan tombol 'Back' ke Dashboard
+            Navigator.pushNamedAndRemoveUntil(
+              context, 
+              AppRouter.login, 
+              (route) => false, // false berarti hapus semua rute sebelumnya
+            );
           },
         ),
       ],
