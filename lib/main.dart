@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:toku_store/core/providers/favorite_provider.dart';
 import 'package:toku_store/core/providers/theme_provider.dart';
 import 'package:toku_store/core/routes/app_router.dart';
 import 'package:toku_store/core/services/biometric_lock_provider.dart';
@@ -33,6 +34,7 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => BiometricLockProvider()..initialize(),
         ),
+        ChangeNotifierProvider(create: (_) => FavoriteProvider()),
       ],
       child: const MyApp(),
     ),
