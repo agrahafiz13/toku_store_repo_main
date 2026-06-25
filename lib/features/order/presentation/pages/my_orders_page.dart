@@ -154,6 +154,8 @@ class _OrderCard extends StatelessWidget {
     switch (status) {
       case 'pending':
         return 'Menunggu Pembayaran';
+      case 'paid':
+        return 'Pembayaran Berhasil';
       case 'processing':
         return 'Sedang Diproses';
       case 'shipped':

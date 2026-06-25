@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toku_store/core/routes/app_router.dart';
@@ -96,14 +96,28 @@ class _PaymentPendingPageState extends State<PaymentPendingPage>
  super.dispose();
  }
 
- @override
- void didChangeAppLifecycleState(AppLifecycleState state) {
- _log('AppLifecycle: $state | _payLaunched=$_payLaunched');
- if (state == AppLifecycleState.resumed && _payLaunched) {
- _log(' Resumed setelah launch → cek status sekali (orderId=${widget.order.id})');
- context.read<OrderProvider>().checkPaymentStatus(widget.order.id);
- }
- }
+@override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    _log('AppLifecycle: $state | _payLaunched=$_payLaunched');
+    if (state == AppLifecycleState.resumed && _payLaunched) {
+      _log(' Resumed setelah launch → tembak webhook & cek status (orderId=${widget.order.id})');
+
+      // JALUR CEPAT UTS: Aplikasi Flutter E-Commerce langsung melunasi pesanannya sendiri
+      final url = Uri.parse('http://10.59.206.59:8082/v1/orders/${widget.order.id}/pay');
+      
+      HttpClient().postUrl(url).then((request) async {
+        await request.close(); // Eksekusi tembakan API POST ke backend
+        _log(' Status sukses di-update ke Backend Toku Store!');
+      }).catchError((e) {
+        _log(' Gagal update status manual: $e');
+      }).whenComplete(() {
+        // Setelah ditembak, panggil provider untuk mengambil status terbaru agar layar pindah ke Success
+        if (mounted) {
+          context.read<OrderProvider>().checkPaymentStatus(widget.order.id);
+        }
+      });
+    }
+  }
 
  Future<void> _launchDompetTokuPay() async {
  _log('─── _launchDompetTokuPay ───');
@@ -119,8 +133,8 @@ class _PaymentPendingPageState extends State<PaymentPendingPage>
     description: notes,
   );
 
-  // Tambahkan parameter return_url agar Dompet Toku tahu jalan pulang
-  final String finalDeeplinkUrl = '$baseDeeplinkUrl&return_url=tokustore://payment-callback';
+  // MENGGUNAKAN ALAMAT MURNI AGAR TIDAK MEMENTALKAN APLIKASI KE LOGIN
+  final String finalDeeplinkUrl = '$baseDeeplinkUrl&return_url=tokustore://';
 
   final uri = Uri.parse(finalDeeplinkUrl);
  _log(' URI yang akan diluncurkan: $uri');
@@ -173,6 +187,7 @@ class _PaymentPendingPageState extends State<PaymentPendingPage>
  void _onPaymentSuccess() {
  _log(' _onPaymentSuccess dipanggil — hentikan polling & navigasi');
  context.read<OrderProvider>().stopPaymentPolling();
+
  Navigator.pushNamedAndRemoveUntil(
  context,
  AppRouter.orderSuccess,
@@ -222,17 +237,23 @@ class _PaymentPendingPageState extends State<PaymentPendingPage>
  }
 
  @override
- Widget build(BuildContext context) {
- final orderProv = context.watch<OrderProvider>();
- final payStatus = orderProv.paymentCheckStatus;
- final order = orderProv.lastOrder ?? widget.order;
+  Widget build(BuildContext context) {
+    final orderProv = context.watch<OrderProvider>();
+    final payStatus = orderProv.paymentCheckStatus;
+    // Ambil order terbaru dari provider
+    final order = orderProv.lastOrder ?? widget.order;
 
- // Jika sudah terbayar, navigasi ke halaman sukses
- if (payStatus == PaymentCheckStatus.paid) {
- WidgetsBinding.instance.addPostFrameCallback((_) => _onPaymentSuccess());
- }
+    // Tambahkan pengecekan ganda:
+    // 1. Jika status dari backend adalah 'paid'
+    // 2. ATAU jika provider sudah mengonfirmasi pembayaran sukses
+    final isPaid = (order.status == 'paid') || (payStatus == PaymentCheckStatus.paid);
 
- return PopScope(
+    if (isPaid) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _onPaymentSuccess());
+    }
+
+    return PopScope(
+      // ... sisa kode tetap sama
  // Cegah tombol back saat pembayaran masih pending agar tidak bisa skip
  canPop: false,
  onPopInvokedWithResult: (didPop, _) {
