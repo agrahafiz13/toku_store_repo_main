@@ -6,6 +6,7 @@ import 'package:toku_store/features/auth/presentation/pages/verify_email_page.da
 import 'package:toku_store/features/auth/presentation/providers/auth_provider.dart';
 import 'package:toku_store/features/cart/presentation/pages/cart_page.dart';
 import 'package:toku_store/features/dashboard/presentation/pages/dashboard_page.dart';
+import 'package:toku_store/features/dashboard/presentation/pages/favorite_page.dart';
 import 'package:toku_store/features/order/data/models/order_model.dart';
 import 'package:toku_store/features/order/presentation/pages/checkout_page.dart';
 import 'package:toku_store/features/order/presentation/pages/my_orders_page.dart';
@@ -24,6 +25,7 @@ class AppRouter {
   static const String orderSuccess = '/order-success';
   static const String myOrders = '/my-orders';
   static const String paymentPending = '/payment-pending';
+  static const String favorite = '/favorite';
 
   static Map<String, WidgetBuilder> get routes => {
         splash: (_) => const SplashPage(),
@@ -34,6 +36,7 @@ class AppRouter {
         cart: (_) => const CartPage(),
         checkout: (_) => const CheckoutPage(),
         myOrders: (_) => const MyOrdersPage(),
+        favorite: (_) => const FavoritePage(),
         orderSuccess: (context) {
           final order =
               ModalRoute.of(context)!.settings.arguments as OrderModel;
