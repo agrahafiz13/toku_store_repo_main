@@ -5,6 +5,7 @@ import 'package:toku_store/core/routes/app_router.dart';
 import 'package:toku_store/features/auth/presentation/providers/auth_provider.dart';
 import 'package:toku_store/features/cart/presentation/providers/cart_provider.dart';
 import 'package:toku_store/features/dashboard/data/models/product_models.dart';
+import 'package:toku_store/features/dashboard/presentation/pages/favorite_page.dart';
 import 'package:toku_store/features/dashboard/presentation/providers/product_provider.dart';
 import 'package:toku_store/features/order/presentation/providers/order_provider.dart';
 import 'package:provider/provider.dart';
@@ -85,15 +86,20 @@ class _DashboardPageState extends State<DashboardPage> {
             Expanded(
               child: RefreshIndicator(
                 onRefresh: () => productProv.fetchProducts(),
-                child: CustomScrollView(
-                  slivers: [
-                    // ── Search Bar ─────────────────────────
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
-                        child: _SearchBar(controller: _searchCtrl, onChanged: (_) => setState(() {})),
-                      ),
-                    ),
+                child: _selectedNav == 2 
+                ? const FavoritePage() // Tampilkan halaman Favorite jika tab ditekan
+                : RefreshIndicator(    // Tampilkan layar Home jika tab lain yang aktif
+                    onRefresh: () => productProv.fetchProducts(),
+                    child: CustomScrollView(
+                      slivers: [
+                        // ── Search Bar ─────────────────────────
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+                            child: _SearchBar(controller: _searchCtrl, onChanged: (_) => setState(() {})),
+                          ),
+                        ),
+
 
                     // ── Banner ─────────────────────────────
                     const SliverToBoxAdapter(
@@ -225,24 +231,19 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ),
             ),
+            ),
 
             // ── Bottom Navigation Bar ────────────────────
-            // ── Bottom Navigation Bar ────────────────────
-            _BottomNav(
+           _BottomNav(
               selectedIndex: _selectedNav,
               onTap: (i) {
                 if (i == 1) {
-                  // Cart → navigate to CartPage
                   Navigator.pushNamed(context, AppRouter.cart).then((_) {
                     if (context.mounted) {
                       context.read<CartProvider>().fetchCart();
                     }
                   });
-                } else if (i == 2) { 
-                  // TAMBAHKAN INI: Navigasi ke halaman Favorite
-                  Navigator.pushNamed(context, AppRouter.favorite); 
                 } else if (i == 3) {
-                  // Account → logout dialog
                   _showLogoutDialog(context, auth);
                 } else {
                   setState(() => _selectedNav = i);
@@ -904,6 +905,7 @@ class _ProductDetailSheetState extends State<_ProductDetailSheet> {
 }
 
 // ── Bottom Navigation Bar ──────────────────────────────────
+// ── Bottom Navigation Bar ──────────────────────────────────
 class _BottomNav extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onTap;
@@ -922,7 +924,10 @@ class _BottomNav extends StatelessWidget {
     final surface = Theme.of(context).colorScheme.surface;
     final primary = Theme.of(context).colorScheme.primary;
     final unselectedColor = Theme.of(context).unselectedWidgetColor;
+    
+    // 1. Ambil data jumlah dari Provider
     final cartItemCount = context.watch<CartProvider>().itemCount;
+    final favItemCount = context.watch<FavoriteProvider>().favorites.length; // <--- TAMBAHAN UNTUK FAVORIT
 
     return Container(
       decoration: BoxDecoration(
@@ -943,7 +948,12 @@ class _BottomNav extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: List.generate(items.length, (i) {
               final selected = selectedIndex == i;
-              final isCart = i == 1;
+              
+              // 2. Tentukan angka yang muncul berdasarkan tab
+              int badgeCount = 0;
+              if (i == 1) badgeCount = cartItemCount;
+              if (i == 2) badgeCount = favItemCount; // <--- TAMPILKAN ANGKA JIKA DI TAB FAVORIT
+
               return GestureDetector(
                 onTap: () => onTap(i),
                 behavior: HitTestBehavior.opaque,
@@ -960,7 +970,8 @@ class _BottomNav extends StatelessWidget {
                             size: 24,
                             color: selected ? primary : unselectedColor,
                           ),
-                          if (isCart && cartItemCount > 0)
+                          // 3. Tampilkan lingkaran merah jika ada isinya
+                          if (badgeCount > 0)
                             Positioned(
                               right: -6,
                               top: -6,
@@ -973,9 +984,7 @@ class _BottomNav extends StatelessWidget {
                                 ),
                                 alignment: Alignment.center,
                                 child: Text(
-                                  cartItemCount > 99
-                                      ? '99+'
-                                      : '$cartItemCount',
+                                  badgeCount > 99 ? '99+' : '$badgeCount',
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 9,
