@@ -21,13 +21,13 @@ class AuthHeader extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: (iconColor ?? const Color(0xFF1565C0)).withOpacity(0.1),
+            color: (iconColor ?? const Color(0xFFC61A2B)).withOpacity(0.1),
             shape: BoxShape.circle,
           ),
           child: Icon(
             icon,
             size: 48,
-            color: iconColor ?? const Color(0xFF1565C0),
+            color: iconColor ?? const Color(0xFFC61A2B),
           ),
         ),
         const SizedBox(height: 20),
