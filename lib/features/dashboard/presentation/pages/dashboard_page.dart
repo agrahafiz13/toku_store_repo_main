@@ -24,7 +24,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   final List<_CategoryItem> _categories = const [
     _CategoryItem(label: 'All', icon: Icons.apps),
-    _CategoryItem(label: 'Belt', icon: Icons.straighten_rounded),
+    _CategoryItem(label: 'Belt', icon: Icons.build_circle_outlined),
     _CategoryItem(label: 'Bracelet', icon: Icons.watch),
     _CategoryItem(label: 'Device', icon: Icons.smartphone),
     _CategoryItem(label: 'Weapon', icon: Icons.colorize),
@@ -295,7 +295,7 @@ class _SearchBar extends StatelessWidget {
         controller: controller,
         onChanged: onChanged,
         decoration: InputDecoration(
-          hintText: 'Puma, Running, Training...',
+          hintText: 'DX, Figure, Memorial, etc....',
           hintStyle: TextStyle(color: hintColor, fontSize: 14),
           prefixIcon: Icon(Icons.search, color: hintColor, size: 22),
           border: InputBorder.none,
@@ -398,7 +398,7 @@ class _BannerCard extends StatelessWidget {
                 width: 160,
                 alignment: Alignment.center,
                 child: const Icon(
-                  Icons.directions_run,
+                  Icons.toys_outlined,
                   size: 80,
                   color: Colors.white24,
                 ),
