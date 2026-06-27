@@ -82,7 +82,7 @@ class FavoritePage extends StatelessWidget {
                     subtitle: Text(
                       'Rp. ${p.price.toInt()}',
                       style: const TextStyle(
-                        color: Color(0xFF1565C0),
+                        color: Color(0xFFC61A2B),
                         fontWeight: FontWeight.bold,
                       ),
                     ),

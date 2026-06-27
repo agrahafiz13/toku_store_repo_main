@@ -123,7 +123,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               child: const Text(
                                 'See All',
                                 style: TextStyle(
-                                  color: Color(0xFF1565C0),
+                                  color: Color(0xFFC61A2B),
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -316,7 +316,7 @@ class _BannerCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         gradient: const LinearGradient(
-          colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
+          colors: [Color(0xFFC61A2B), Color(0xFFE24353)],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
         ),
@@ -431,7 +431,7 @@ class _CategoryChip extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
           color: selected
-              ? const Color(0xFF1565C0)
+              ? const Color(0xFFC61A2B)
               : Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(22),
           boxShadow: [
@@ -643,7 +643,7 @@ class _ProductCardState extends State<_ProductCard> {
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF1565C0),
+                        color: Color(0xFFC61A2B),
                       ),
                     ),
                   ],
@@ -1039,7 +1039,7 @@ class _AccountDialog extends StatelessWidget {
           // Avatar
           CircleAvatar(
             radius: 30,
-            backgroundColor: const Color(0xFF1565C0),
+            backgroundColor: const Color(0xFFC61A2B),
             child: Text(
               (auth.firebaseUser?.displayName ?? 'U')[0].toUpperCase(),
               style: const TextStyle(fontSize: 24, color: Colors.white),

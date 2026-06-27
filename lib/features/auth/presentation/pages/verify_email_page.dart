@@ -169,7 +169,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                   variant: ButtonVariant.outlined,
                   onPressed: _onNo,
                   icon: const Icon(Icons.arrow_back,
-                      color: Color(0xFF1565C0)),
+                      color: Color(0xFFC61A2B)),
                 ),
                 const SizedBox(height: 32),
 

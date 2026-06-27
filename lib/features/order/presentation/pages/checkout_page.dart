@@ -32,7 +32,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
  label: 'Transfer Bank',
  subtitle: 'BCA, Mandiri, BNI, BRI',
  icon: Icons.account_balance,
- iconColor: Color(0xFF1565C0),
+ iconColor: Color(0xFFC61A2B),
  ),
  _PaymentOption(
  value: 'virtual_account',
