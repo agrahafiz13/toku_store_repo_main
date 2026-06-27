@@ -1,0 +1,12 @@
+package models
+
+import "time"
+
+type CartItem struct {
+	ID        uint      `json:"id" gorm:"primaryKey"`
+	UserID    uint      `json:"user_id"`
+	ProductID uint      `json:"product_id"`
+	Quantity  int       `json:"quantity"`
+	Product   Product   `json:"product" gorm:"foreignKey:ProductID"`
+	CreatedAt time.Time `json:"created_at"`
+}

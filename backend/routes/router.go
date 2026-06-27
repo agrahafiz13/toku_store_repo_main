@@ -30,6 +30,16 @@ func SetupRouter() *gin.Engine {
 
 	// ─── API v1 group ─────────────────────────────────────────
 	v1 := r.Group("/v1")
+	v1.GET("/cart", handlers.GetCart)
+	v1.POST("/cart", handlers.AddToCart)
+	v1.PUT("/cart/:id", handlers.UpdateCart)
+	v1.DELETE("/cart/:id", handlers.RemoveCart)
+	v1.DELETE("/cart", handlers.ClearCart)
+	v1.POST("/orders/checkout", handlers.Checkout)
+	v1.GET("/orders", handlers.GetMyOrders)
+	v1.GET("/orders/:id", handlers.GetOrderDetail)
+	// Pastikan ini ada di dalam grup routing order Anda
+	v1.POST("/orders/:id/pay", handlers.PaymentCallback)
 	{
 		// Health check — tidak perlu auth
 		v1.GET("/health", func(c *gin.Context) {
