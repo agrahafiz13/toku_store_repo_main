@@ -22,9 +22,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
  static const List<_PaymentOption> _paymentOptions = [
  _PaymentOption(
  value: 'dompet_toku_pay',
- label: 'Dompet_toku_pay',
- subtitle: 'Bayar via Dompet Digital',
- icon: Icons.school_rounded,
+ label: 'Dompet Digital',
+ subtitle: 'Bayar via Dompet Digital TokuPay',
+ icon: Icons.attach_money_rounded,
  iconColor: Color(0xFF1A237E),
  ),
  _PaymentOption(

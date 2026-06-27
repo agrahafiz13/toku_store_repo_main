@@ -1067,6 +1067,28 @@ class _AccountDialog extends StatelessWidget {
           const Divider(),
           const SizedBox(height: 4),
 
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: Icon(
+              Icons.receipt_long_rounded, 
+              color: Theme.of(context).colorScheme.primary, // Menyesuaikan warna tema
+            ),
+            title: const Text(
+              'Pesanan Saya',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+            ),
+            trailing: const Icon(Icons.chevron_right, size: 20, color: Colors.grey),
+            onTap: () {
+              Navigator.pop(context);              
+              // 2. Pindah ke halaman riwayat pesanan 
+              // PENTING: Ganti tulisan AppRouter.myOrders di bawah ini dengan 
+              // nama variabel rute yang Anda buat di app_router.dart
+              Navigator.pushNamed(context, '/my-orders'); 
+            },
+          ),
+          const Divider(height: 1),
+          const SizedBox(height: 12),
+
           // Dark mode toggle row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
